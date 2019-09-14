@@ -44,6 +44,7 @@ var (
 	big0 = big.NewInt(0)
 )
 
+// Push is the only legal method to add element to the chain
 func (c *MemChain) Push(block *Block) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -80,6 +81,7 @@ func (c *MemChain) Push(block *Block) error {
 	return err
 }
 
+// Audit will look through the whole chain and check the integrity of chain
 func (c *MemChain) Audit() bool {
 	c.mu.RLock()
 	defer c.mu.RUnlock()

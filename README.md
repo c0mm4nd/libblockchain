@@ -6,7 +6,7 @@ Make blockchain integration easy
 
 This blockchain has no consensus, which means that you can integrate it into any application and act as any role like db, mq etc.
 
-This structure is thread(routine?)-safe and can avoid the cover due to the hash collide
+This structure is thread(routine?)-safe and can avoid the covering block from the hash collide
 
 ## usage 
 
