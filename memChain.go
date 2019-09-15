@@ -5,6 +5,8 @@ import (
 	"errors"
 	"math/big"
 	"sync"
+
+	"github.com/maoxs2/libblockchain/abstract"
 )
 
 type MemChain struct {
@@ -27,7 +29,7 @@ var (
 )
 
 // Push is the only legal method to add element to the chain
-func (c *MemChain) Push(block *Block) error {
+func (c *MemChain) Push(block abstract.Block) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -57,8 +59,8 @@ func (c *MemChain) Push(block *Block) error {
 		}
 	}
 
-	c.latestBlock = block
-	c.memHashMap[strHash] = append(c.memHashMap[strHash], block)
+	c.latestBlock = block.(*Block)
+	c.memHashMap[strHash] = append(c.memHashMap[strHash], c.latestBlock)
 	c.memHeightMap[hexHeight] = c.memHeightMap[hexHeight]
 	return err
 }
@@ -106,18 +108,25 @@ func (c *MemChain) Audit() bool {
 	}
 }
 
-func (c *MemChain) GetBlockByHeight(height *big.Int) *Block {
+func (c *MemChain) GetBlockByHeight(height *big.Int) abstract.Block {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
-	return c.memHeightMap[height.Text(16)]
+	resultBlock := c.memHeightMap[height.Text(16)]
+	return resultBlock
 }
 
-func (c *MemChain) GetBlockByHash(hash []byte) []*Block {
+func (c *MemChain) GetBlockByHash(hash []byte) []abstract.Block {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 
-	return c.memHashMap[string(hash)]
+	blocks := c.memHashMap[string(hash)]
+	resultBlocks := make([]abstract.Block, len(blocks))
+	for i, v := range c.memHashMap[string(hash)] {
+		resultBlocks[i] = abstract.Block(v)
+	}
+
+	return resultBlocks
 }
 
 func NewMemChain() *MemChain {

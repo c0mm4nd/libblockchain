@@ -12,6 +12,6 @@ type Block interface {
 type Chain interface {
 	Push(block Block) error
 	Audit() bool
-	GetBlockByHeight(height *big.Int) *Block
-	GetBlockByHash(hash []byte) *Block
+	GetBlockByHeight(height *big.Int) Block
+	GetBlockByHash(hash []byte) []Block
 }
