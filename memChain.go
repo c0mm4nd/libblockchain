@@ -5,31 +5,13 @@ import (
 	"errors"
 	"math/big"
 	"sync"
-
-	"github.com/maoxs2/libblockchain/abstract"
 )
 
 type MemChain struct {
-	latestBlock  abstract.Block
+	latestBlock  *Block
 	mu           *sync.RWMutex
 	memHashMap   map[string][]*Block
 	memHeightMap map[string]*Block
-}
-
-func (c *MemChain) GetHeight() *big.Int {
-	panic("implement me")
-}
-
-func (c *MemChain) GetHash() []byte {
-	panic("implement me")
-}
-
-func (c *MemChain) GetPrevHash() []byte {
-	panic("implement me")
-}
-
-func (c *MemChain) GetContent() []byte {
-	panic("implement me")
 }
 
 var (
